@@ -130,9 +130,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="mm.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="mm.db" />
     <None Include="mm.sqlite" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

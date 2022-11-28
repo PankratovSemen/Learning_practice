@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:magazine_marks"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1080" Deactivated="Window_Deactivated" SizeChanged="Window_SizeChanged"
-        x:Name="Win1"
+        x:Name="Win1" Loaded="Win1_Loaded"
         >
     <Grid>
         <Grid x:Name="back_gr1" Visibility="Hidden">
@@ -15,7 +15,7 @@
         </Grid>
         
 
-        <StackPanel x:Name="log_in_" HorizontalAlignment="Center" Width="1080" Visibility="Hidden">
+        <StackPanel x:Name="log_in_" HorizontalAlignment="Center" Width="1080" Visibility="Visible">
             
                
             
@@ -29,25 +29,25 @@
 
 
         </StackPanel>
-        <StackPanel Background="#FFE8E8E8" Visibility="Visible" x:Name="GUI">
+        <StackPanel Background="#FFE8E8E8" Visibility="Hidden" x:Name="GUI">
             <StackPanel x:Name="menu" Background="#FF1414DD">
                 <Label Content="Средний балл" Foreground="White" MouseDown="Label_MouseDown"/>
                 <Label Content="Оценки обучающихся" Foreground="White" Margin="92,-27,0,0" HorizontalAlignment="Left" MouseDown="Label_MouseDown_1"/>
             </StackPanel>
-            <StackPanel Height="664" Background="#FFF3F0F0" Visibility="Hidden" x:Name="db_middle_marks">
+            <StackPanel Height="664" Background="#FFF3F0F0" Visibility="Visible" x:Name="db_middle_marks">
                 <TextBlock TextWrapping="Wrap" Text="Средний балл обучающихся" HorizontalAlignment="Left" FontSize="25" FontWeight="Bold" Margin="0,9,0,0"/>
                 <DataGrid x:Name="middle_mar" Height="608" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Студент" Binding ="{Binding Path=id_student}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Оценка 1" Binding ="{Binding Path=middle_marks1}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Оценка 2" Binding ="{Binding Path=middle_marks2}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Оценка 3" Binding ="{Binding Path=middle_marks3}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Высшая математика" Binding ="{Binding Path=middle_marks1}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Физика" Binding ="{Binding Path=middle_marks2}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="История России" Binding ="{Binding Path=middle_marks3}" IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
                
             </StackPanel>
-            <StackPanel Height="672" Margin="-4,-660,0,0"  Visibility="Visible">
-                <ComboBox Width="120" BorderBrush="#FFAF7A7A" Margin="155,41,0,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Height="672" Margin="-4,-660,0,0"  Visibility="Hidden" x:Name="marks_panel">
+                <ComboBox x:Name="Students_combo" Width="120" BorderBrush="#FFAF7A7A" Margin="155,41,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding}">
                     <ComboBox.Background>
                         <LinearGradientBrush EndPoint="0,1">
                             <GradientStop Color="#FFF0F0F0"/>
@@ -56,10 +56,11 @@
                     </ComboBox.Background>
                 </ComboBox>
                 <TextBlock TextWrapping="Wrap" Text="Обучающийся" HorizontalAlignment="Center" Margin="-63,-20,0,0"/>
-                <TextBox TextWrapping="Wrap" Width="120" Margin="158,23,0,0" Height="24" FontSize="18"/>
+                <TextBox x:Name ="mark_text" TextWrapping="Wrap" Width="120" Margin="158,23,0,0" Height="24" FontSize="18"/>
                 <TextBlock TextWrapping="Wrap" Text="Оценка" HorizontalAlignment="Center" Margin="-26,-20,0,0"/>
+                <Button Content="Записать" FontSize="18" HorizontalAlignment="Center" Margin="108,24,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
             </StackPanel>
-            <Button Content="Записать" FontSize="18" HorizontalAlignment="Center" Margin="108,-525,0,0" VerticalAlignment="Top"/>
+            
 
 
         </StackPanel>
