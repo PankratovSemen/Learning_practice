@@ -147,6 +147,10 @@ namespace magazine_marks
         {
             db_middle_marks.Visibility = Visibility.Hidden;
             marks_panel.Visibility = Visibility.Visible;
+
+            //Заполнение таблицы db_marks базой данных
+
+            
         }
 
         private void Win1_Loaded(object sender, RoutedEventArgs e)
@@ -165,6 +169,11 @@ namespace magazine_marks
                 Students_combo.ItemsSource = ds.Tables[0].DefaultView;
                 Students_combo.DisplayMemberPath = ds.Tables[0].Columns["name || ' ' || surname"].ToString();
                 Students_combo.SelectedValuePath = ds.Tables[0].Columns["name || ' ' || surname"].ToString();
+                
+                Search_students_marks.ItemsSource = ds.Tables[0].DefaultView;
+                Search_students_marks.DisplayMemberPath = ds.Tables[0].Columns["name || ' ' || surname"].ToString();
+                Search_students_marks.SelectedValuePath = ds.Tables[0].Columns["name || ' ' || surname"].ToString();
+
                 conn.Close();
             }
             catch(Exception ex)
@@ -234,7 +243,50 @@ namespace magazine_marks
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show("Ошибка возможно у вас нет необходимых прав для данной операции " + ex.Message);
+            }
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            string students = Search_students_marks.Text;
+            string subjects = Search_subject_marks1.Text;
+            SQLiteConnection conn = new SQLiteConnection("Data Source = mm.db; Version = 3");
+            conn.Open();
+            SQLiteCommand command = new SQLiteCommand();
+
+            command.Connection = conn;
+            command.CommandText = "SELECT * FROM marks WHERE subject = @sub AND id_student = @is";
+            command.Parameters.AddWithValue("@sub", subjects);
+            command.Parameters.AddWithValue("@is", students);
+            command.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            SQLiteDataAdapter adap = new SQLiteDataAdapter(command);
+            adap.Fill(dt);
+
+            db_marks.ItemsSource = dt.DefaultView;
+        }
+
+        private void btn_Print_Click(object sender, RoutedEventArgs e)
+        {
+            string students = Search_students_marks.Text;
+            string subjects = Search_subject_marks1.Text;
+            SQLiteConnection conn = new SQLiteConnection("Data Source = mm.db; Version = 3");
+            conn.Open();
+            SQLiteCommand command = new SQLiteCommand();
+
+            command.Connection = conn;
+            command.CommandText = "SELECT * FROM marks WHERE subject = @sub AND id_student = @is";
+            command.Parameters.AddWithValue("@sub", subjects);
+            command.Parameters.AddWithValue("@is", students);
+            command.ExecuteNonQuery();
+            DataTable dt = new DataTable();
+            SQLiteDataAdapter adap = new SQLiteDataAdapter(command);
+            adap.Fill(dt);
+            PrintDialog printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == true)
+            {
+                printDialog.PrintVisual(db_middle_marks, "Печать срднего балла");
             }
         }
     }

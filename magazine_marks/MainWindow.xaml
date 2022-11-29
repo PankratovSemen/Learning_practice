@@ -13,40 +13,51 @@
             <Image x:Name ="image" HorizontalAlignment="Left" Height="697" Margin="10,10,0,0" VerticalAlignment="Top" Width="1920" Source="/p1.jpg" Stretch="Fill" MaxWidth="1920" OpacityMask="#FFE5CF07" MaxHeight="2000"/>
 
         </Grid>
-        
 
-        <StackPanel x:Name="log_in_" HorizontalAlignment="Center" Width="1080" Visibility="Visible">
-            
-               
-            
+
+        <StackPanel x:Name="log_in_" HorizontalAlignment="Center" Width="1080" Visibility="Hidden">
+
+
+
             <TextBlock TextWrapping="Wrap" Text="Добро пожаловать!" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="40" FontFamily="Courier New" Foreground="Black" Margin="0,100,0,0"/>
             <TextBox x:Name="login_box" TextWrapping="NoWrap" Width="242" HorizontalAlignment="Center" Height="43" Background="#FFF1F1F1" Margin="0,82,0,0" FontSize="25"  />
             <PasswordBox x:Name="password_box"  Width="242" HorizontalAlignment="Center" Height="43" Background="#FFF4EFEF" Margin="0,60,-1,0" FontSize="25" />
             <Button Content="Войти" HorizontalAlignment="Center" Foreground="White" FontSize="40" Background="#FF9100FE" BorderBrush="#FF6F14A4" Padding="1,-1,1,1" UseLayoutRounding="True" Height="83" BorderThickness="0,0,0,0" Margin="0,60,0,0" Width="144" FontFamily="Courier New" Click="Button_Click"/>
             <Label Content="Логин" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="20" Margin="0,-326,162,0" FontFamily="Courier New" Foreground="Black"/>
             <Label Content="Пароль" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,-221,157,0" FontFamily="Courier New" Foreground="Black"/>
-           
+
 
 
         </StackPanel>
-        <StackPanel Background="#FFE8E8E8" Visibility="Hidden" x:Name="GUI">
+        <StackPanel Visibility="Visible" x:Name="GUI">
+            <StackPanel.Background>
+                <ImageBrush ImageSource="/back.jpg" Opacity="0.3"/>
+            </StackPanel.Background>
             <StackPanel x:Name="menu" Background="#FF1414DD">
                 <Label Content="Средний балл" Foreground="White" MouseDown="Label_MouseDown"/>
                 <Label Content="Оценки обучающихся" Foreground="White" Margin="92,-27,0,0" HorizontalAlignment="Left" MouseDown="Label_MouseDown_1"/>
             </StackPanel>
-            <StackPanel Height="664" Background="#FFF3F0F0" Visibility="Visible" x:Name="db_middle_marks">
+            <StackPanel Height="664" Visibility="Visible" x:Name="db_middle_marks" VerticalAlignment="Top">
+                <StackPanel.Background>
+                    <SolidColorBrush Color="#FFF3F0F0" Opacity="0.01"/>
+                </StackPanel.Background>
                 <TextBlock TextWrapping="Wrap" Text="Средний балл обучающихся" HorizontalAlignment="Left" FontSize="25" FontWeight="Bold" Margin="0,9,0,0"/>
-                <DataGrid x:Name="middle_mar" Height="608" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False">
+                <DataGrid x:Name="middle_mar" Height="553" d:ItemsSource="{d:SampleData ItemCount=5}" AutoGenerateColumns="False" FontSize="14">
+                    <DataGrid.Background>
+                        <SolidColorBrush Color="#FFF0F0F0" Opacity="0"/>
+                    </DataGrid.Background>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Студент" Binding ="{Binding Path=id_student}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Высшая математика" Binding ="{Binding Path=middle_marks1}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="Физика" Binding ="{Binding Path=middle_marks2}" IsReadOnly="True"/>
-                        <DataGridTextColumn Header="История России" Binding ="{Binding Path=middle_marks3}" IsReadOnly="True"/>
+                        <DataGridTextColumn Header="Студент" Binding ="{Binding Path=id_student}" IsReadOnly="True" FontSize="16"/>
+                        <DataGridTextColumn Header="Высшая математика" Binding ="{Binding Path=middle_marks1}" IsReadOnly="True" FontSize="16"/>
+                        <DataGridTextColumn Header="Физика" Binding ="{Binding Path=middle_marks2}" IsReadOnly="True" FontSize="16"/>
+                        <DataGridTextColumn Header="История России" Binding ="{Binding Path=middle_marks3}" IsReadOnly="True" FontSize="16"/>
                     </DataGrid.Columns>
+
                 </DataGrid>
-               
+                <Button x:Name="btn_Print" Content="Печать" HorizontalAlignment="Right" FontSize="20" Margin="0,5,38,0" Height="55" Width="97" Background="#FF7239BA" Foreground="White"/>
+
             </StackPanel>
-            <StackPanel Height="672" Margin="-4,-660,0,0"  Visibility="Hidden" x:Name="marks_panel">
+            <StackPanel Height="664" Margin="-4,-660,0,0"  Visibility="Hidden" x:Name="marks_panel">
                 <ComboBox x:Name="Students_combo" Width="120" BorderBrush="#FFAF7A7A" Margin="155,41,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding}">
                     <ComboBox.Background>
                         <LinearGradientBrush EndPoint="0,1">
@@ -55,12 +66,35 @@
                         </LinearGradientBrush>
                     </ComboBox.Background>
                 </ComboBox>
-                <TextBlock TextWrapping="Wrap" Text="Обучающийся" HorizontalAlignment="Center" Margin="-63,-20,0,0"/>
+                <TextBlock TextWrapping="Wrap" Text="Обучающийся" HorizontalAlignment="Center" Margin="-63,-20,21,0" FontSize="16"/>
                 <TextBox x:Name ="mark_text" TextWrapping="Wrap" Width="120" Margin="158,23,0,0" Height="24" FontSize="18"/>
-                <TextBlock TextWrapping="Wrap" Text="Оценка" HorizontalAlignment="Center" Margin="-26,-20,0,0"/>
+                <TextBlock TextWrapping="Wrap" Text="Оценка" HorizontalAlignment="Center" Margin="-26,-24,0,0" FontSize="16"/>
                 <Button Content="Записать" FontSize="18" HorizontalAlignment="Center" Margin="108,24,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
+                <DataGrid x:Name="db_marks" Height="366" d:ItemsSource="{d:SampleData ItemCount=4}" Margin="0,103.8,0,0" AutoGenerateColumns="False"  >
+                    <DataGrid.Background>
+                        <SolidColorBrush Color="#FFF0F0F0" Opacity="0"/>
+                    </DataGrid.Background>
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="Предмет" Binding ="{Binding Path=subject}" IsReadOnly="True" FontSize="16" MaxWidth="300"/>
+                        <DataGridTextColumn Header="Обучающийся" Binding ="{Binding Path=id_student}" IsReadOnly="True" FontSize="16" MaxWidth="300"/>
+                        <DataGridTextColumn Header="Оценки" Binding ="{Binding Path=mark}" IsReadOnly="True" FontSize="16" MaxWidth="300"/>
+
+                    </DataGrid.Columns>
+                </DataGrid>
+                <StackPanel Height="45" Margin="0,-829,0,0" Background="#FF121078">
+                    <TextBlock TextWrapping="Wrap" Text="Обучающийся" FontSize="18" HorizontalAlignment="Right" Foreground="White" Margin="-12,9,675,0"/>
+                    <ComboBox x:Name="Search_students_marks" Width="120" Margin="-4,-22,521,0" HorizontalAlignment="Right" FontSize="16"/>
+                    <TextBlock TextWrapping="Wrap" Text="Предмет" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" FontSize="18" Margin="0,-29,368,0"/>
+                    <ComboBox x:Name="Search_subject_marks1" Width="120" HorizontalAlignment="Right" Margin="0,-30,220,0" ItemsSource="{Binding}" FontSize="16" VerticalAlignment="Top">
+                        <TextBlock Text="Физика"/>
+                        <TextBlock Text="Высшая математика"/>
+                        <TextBlock Text="История России"/>
+                    </ComboBox>
+                    <Button Content="Поиск" HorizontalAlignment="Right" Margin="0,-26,36,0" Width="69" Height="27" FontSize="16" Background="#FF7239BA" Foreground="White" Click="Button_Click_2"/>
+                </StackPanel>
             </StackPanel>
-            
+
 
 
         </StackPanel>
