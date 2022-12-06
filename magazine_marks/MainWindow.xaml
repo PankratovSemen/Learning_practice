@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:magazine_marks"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1080" Deactivated="Window_Deactivated" SizeChanged="Window_SizeChanged"
+        Title="Система выставлене оценок и средний балл" Height="720" Width="1080" Deactivated="Window_Deactivated" SizeChanged="Window_SizeChanged"
         x:Name="Win1" Loaded="Win1_Loaded" Activated="Win1_Activated"
         >
     <Grid>
@@ -36,9 +36,9 @@
             <StackPanel x:Name="menu" Background="#FF1414DD">
 
                 <Label Content="Средний балл" Foreground="White" MouseDown="Label_MouseDown"/>
-                <Label Content="Оценки обучающихся" Foreground="White" Margin="92,-27,0,0" HorizontalAlignment="Left" MouseDown="Label_MouseDown_1"/>
+                <Label Content="Оценки обучающихся" Foreground="White" Margin="92,-27,0,0" HorizontalAlignment="Left" MouseDown="Label_MouseDown_1" x:Name="marks_label"/>
                 <Label x:Name="username_text" Content="" Foreground="White" HorizontalAlignment="Right" FontSize="14" Margin="0,-27,0,0"/>
-                <TextBlock TextWrapping="Wrap" Text="Обучающийся" Foreground="White" Margin="240,-23,0,0" HorizontalAlignment="Left" MouseDown="TextBlock_MouseDown"/>
+                <TextBlock TextWrapping="Wrap" Text="Обучающийся" Foreground="White" Margin="240,-23,0,0" HorizontalAlignment="Left" MouseDown="TextBlock_MouseDown" x:Name ="cr_students"/>
             </StackPanel>
             <StackPanel Height="664" Visibility="Visible" x:Name="db_middle_marks" VerticalAlignment="Top">
                 <StackPanel.Background>
@@ -57,18 +57,11 @@
                     </DataGrid.Columns>
 
                 </DataGrid>
-                <Button x:Name="btn_Print" Content="Печать" HorizontalAlignment="Right" FontSize="20" Margin="0,5,38,0" Height="55" Width="97" Background="#FF7239BA" Foreground="White" Click="btn_Print_Click_1"/>
+                <Button x:Name="btn_Print" Content="Экспорт" HorizontalAlignment="Right" FontSize="20" Margin="0,5,38,0" Height="55" Width="97" Background="#FF7239BA" Foreground="White" Click="btn_Print_Click_1"/>
 
             </StackPanel>
             <StackPanel Height="664" Margin="-4,-660,0,0"  Visibility="Hidden" x:Name="marks_panel">
-                <ComboBox x:Name="Students_combo" Width="120" BorderBrush="#FFAF7A7A" Margin="155,41,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding}">
-                    <ComboBox.Background>
-                        <LinearGradientBrush EndPoint="0,1">
-                            <GradientStop Color="#FFF0F0F0"/>
-                            <GradientStop Color="#FFAE7F7F" Offset="1"/>
-                        </LinearGradientBrush>
-                    </ComboBox.Background>
-                </ComboBox>
+                <ComboBox x:Name="Students_combo" Width="120" Margin="-19,8,-178,0" HorizontalAlignment="Center" FontSize="16"/>
                 <TextBlock TextWrapping="Wrap" Text="Обучающийся" HorizontalAlignment="Center" Margin="-63,-20,21,0" FontSize="16"/>
                 <TextBox x:Name ="mark_text" TextWrapping="Wrap" Width="120" Margin="158,23,0,0" Height="24" FontSize="18" PreviewKeyDown="mark_text_PreviewKeyDown" KeyDown="mark_text_KeyDown"/>
                 <TextBlock TextWrapping="Wrap" Text="Оценка" HorizontalAlignment="Center" Margin="-26,-24,0,0" FontSize="16"/>
@@ -87,22 +80,22 @@
                 </DataGrid>
                 <StackPanel Height="45" Margin="0,-829,0,0" Background="#FF121078">
                     <TextBlock TextWrapping="Wrap" Text="Обучающийся" FontSize="18" HorizontalAlignment="Right" Foreground="White" Margin="-12,9,675,0"/>
-                    <ComboBox x:Name="Search_students_marks" Width="120" Margin="-4,-22,521,0" HorizontalAlignment="Right" FontSize="16"/>
+                    <ComboBox x:Name="Search_students_marks" Width="119" Margin="-4,-22,521,0" HorizontalAlignment="Right" FontSize="16"/>
                     <TextBlock TextWrapping="Wrap" Text="Предмет" HorizontalAlignment="Right" VerticalAlignment="Top" Foreground="White" FontSize="18" Margin="0,-29,368,0"/>
                     <ComboBox x:Name="Search_subject_marks1" Width="120" HorizontalAlignment="Right" Margin="0,-30,220,0" ItemsSource="{Binding}" FontSize="16" VerticalAlignment="Top">
                         <TextBlock Text="Физика"/>
                         <TextBlock Text="Высшая математика"/>
                         <TextBlock Text="История России"/>
                     </ComboBox>
-                    <Button Content="Поиск" HorizontalAlignment="Right" Margin="0,-26,36,0" Width="69" Height="27" FontSize="16" Background="#FF7239BA" Foreground="White" Click="Button_Click_2"/>
+                    <Button Content="Поиск" HorizontalAlignment="Right" Margin="0,-26,36,0" Width="57" Height="27" FontSize="16" Background="#FF7239BA" Foreground="White" Click="Button_Click_2"/>
                 </StackPanel>
 
 
             </StackPanel>
-            <StackPanel Height="664" HorizontalAlignment="Left" Width="1078" Margin="0,-662,0,0" Opacity="100" x:Name="students_panel" Visibility="Hidden">
+            <StackPanel Height="664" HorizontalAlignment="Left" Width="1078" Margin="0,-662,0,0" Opacity="100" x:Name="students_panel" Visibility="Hidden" >
                 <TextBlock TextWrapping="Wrap" Text="Добавление обучающихся" HorizontalAlignment="Left" Foreground="Black" Width="393" Height="55" Margin="0,5,0,0" FontSize="30"/>
-                <TextBox x:Name="surname_box" TextWrapping="Wrap" Width="190" FontSize="20" Height="37"/>
-                <TextBox x:Name="name_box" TextWrapping="Wrap" Width="190" FontSize="20" Height="37" Margin="0,20,0,0"/>
+                <TextBox x:Name="surname_box" TextWrapping="Wrap" Width="187" FontSize="20" Height="37" PreviewTextInput="surname_box_PreviewTextInput"/>
+                <TextBox x:Name="name_box" TextWrapping="Wrap" Width="190" FontSize="20" Height="37" Margin="0,20,0,0" PreviewTextInput="name_box_PreviewTextInput"/>
                 <TextBox x:Name="group_box" TextWrapping="Wrap" Width="190" FontSize="20" Height="37" Margin="0,33,0,0"/>
                 <TextBlock TextWrapping="Wrap" Text="Фамилия" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Padding="0,3,0,0" Margin="0,-293,281,0"/>
                 <TextBlock TextWrapping="Wrap" Text="Имя" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Padding="0,3,0,0" Margin="0,-178,281,0"/>

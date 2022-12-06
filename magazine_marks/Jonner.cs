@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using magazine_marks;
 using Xunit;
 using System.ComponentModel.DataAnnotations;
+using System.Dynamic;
 
 namespace magazine_marks
 {
@@ -86,6 +87,9 @@ namespace magazine_marks
             return us;
         }
 
-       
+       public string GetVal(string Y)
+        {
+            return Y;
+        }
     }
 }

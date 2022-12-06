@@ -67,9 +67,18 @@ namespace magazine_marks
 
                 middle_mar.ItemsSource = dt1.DefaultView;
                 
-                MessageBox.Show(j.roles() + j.subjects());
+                MessageBox.Show(j.roles() + " " + j.subjects());
                 conn.Close();
                 username_text.Content = j.users() + " ( " + j.subjects() + " ) ";
+                if (j.roles() == "Администратор")
+                {
+                    cr_students.Visibility = Visibility.Visible;
+                    
+                }
+                else
+                {
+                    cr_students.Visibility = Visibility.Hidden;
+                }
             }
         }
 
@@ -115,6 +124,18 @@ namespace magazine_marks
             {
                 mark_text.Clear();
             }
+
+            if (j.roles() == "Администратор")
+            {
+                cr_students.Visibility = Visibility.Visible;
+               
+                
+
+            }
+            else
+            {
+                cr_students.Visibility = Visibility.Hidden;
+            }
         }
 
         private void Window_Deactivated(object sender, EventArgs e)
@@ -134,7 +155,7 @@ namespace magazine_marks
             conn.Close();
 
 
-            
+
             conn.Open();
             SQLiteCommand command = new SQLiteCommand();
             command.Connection = conn;
@@ -152,6 +173,16 @@ namespace magazine_marks
             Search_students_marks.SelectedValuePath = ds.Tables[0].Columns["name || ' ' || surname"].ToString();
 
             conn.Close();
+
+            if (j.roles() == "Администратор")
+            {
+                cr_students.Visibility = Visibility.Visible;
+
+            }
+            else
+            {
+                cr_students.Visibility = Visibility.Hidden;
+            }
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -183,10 +214,18 @@ namespace magazine_marks
 
         private void Label_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
-            db_middle_marks.Visibility = Visibility.Hidden;
-            marks_panel.Visibility = Visibility.Visible;
-            students_panel.Visibility = Visibility.Hidden;
+           
+            if(j.roled != "Преподаватель")
+            {
+                MessageBox.Show("У вас нет прав доступа к этому компоненту");
+            }
 
+            else
+            {
+                db_middle_marks.Visibility = Visibility.Hidden;
+                marks_panel.Visibility = Visibility.Visible;
+                students_panel.Visibility = Visibility.Hidden;
+            }
             //Заполнение таблицы db_marks базой данных
 
 
@@ -214,6 +253,9 @@ namespace magazine_marks
                 Search_students_marks.SelectedValuePath = ds.Tables[0].Columns["name || ' ' || surname"].ToString();
 
                 conn.Close();
+
+
+                
             }
             catch (Exception ex)
             {
@@ -224,297 +266,132 @@ namespace magazine_marks
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            //&& (mark_text.Text == "2") && (mark_text.Text == "3") && (mark_text.Text == "4") && (mark_text.Text == "5")
+            int st_fail = 0;
             try
             {
-                if (mark_text.Text == "1" )
+                
+
+                string mark = mark_text.Text;
+                SQLiteConnection conn = new SQLiteConnection("Data Source = mm.db; Version = 3");
+                conn.Open();
+                if (mark == "5")
                 {
-                    MessageBox.Show("ok");
-                    string stud = Students_combo.Text;
-                    string mark = mark_text.Text;
-                    SQLiteConnection conn = new SQLiteConnection("Data Source = mm.db; Version = 3");
-                    conn.Open();
+                    
+                    
                     SQLiteCommand command = new SQLiteCommand();
                     command.Connection = conn;
                     command.CommandText = "INSERT INTO marks(subject,id_student,mark) VALUES (@s,@is,@m)";
                     command.Parameters.AddWithValue("@s", j.subjects());
-                    command.Parameters.AddWithValue("@is", stud);
+
+                    command.Parameters.AddWithValue("@is", Students_combo.Text.ToString());
                     command.Parameters.AddWithValue("@m", mark);
                     command.ExecuteNonQuery();
-
-
-                    SQLiteCommand command1 = new SQLiteCommand();
-                    command1.Connection = conn;
-                    command1.CommandText = "SELECT avg(mark) FROM marks WHERE id_student =@studentval AND subject = @sub";
-                    command1.Parameters.AddWithValue("@studentval", stud);
-                    command1.Parameters.AddWithValue("@sub", j.subjects());
-
-
-                    command1.ExecuteNonQuery();
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(command1);
-                    DataSet ds = new DataSet();
-                    adapter.Fill(ds, "marks");
-                    DataRow row = ds.Tables[0].Rows[0];
-
-
-                    SQLiteCommand command2 = new SQLiteCommand();
-                    command2.Connection = conn;
-                    if (j.subjects() == "Физика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks2 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-                    else if (j.subjects() == "Высшая математика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks1 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-
-                    else if (j.subjects() == "История России")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks3 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-
-
-                    command2.ExecuteNonQuery();
-
                 }
-
-                if (mark_text.Text == "2")
+                else if (mark == "4")
                 {
-                    MessageBox.Show("ok");
-                    string stud = Students_combo.Text;
-                    string mark = mark_text.Text;
-                    SQLiteConnection conn = new SQLiteConnection("Data Source = mm.db; Version = 3");
-                    conn.Open();
+
+                   
                     SQLiteCommand command = new SQLiteCommand();
                     command.Connection = conn;
                     command.CommandText = "INSERT INTO marks(subject,id_student,mark) VALUES (@s,@is,@m)";
                     command.Parameters.AddWithValue("@s", j.subjects());
-                    command.Parameters.AddWithValue("@is", stud);
+
+                    command.Parameters.AddWithValue("@is", Students_combo.Text.ToString());
                     command.Parameters.AddWithValue("@m", mark);
                     command.ExecuteNonQuery();
-
-
-                    SQLiteCommand command1 = new SQLiteCommand();
-                    command1.Connection = conn;
-                    command1.CommandText = "SELECT avg(mark) FROM marks WHERE id_student =@studentval AND subject = @sub";
-                    command1.Parameters.AddWithValue("@studentval", stud);
-                    command1.Parameters.AddWithValue("@sub", j.subjects());
-
-
-                    command1.ExecuteNonQuery();
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(command1);
-                    DataSet ds = new DataSet();
-                    adapter.Fill(ds, "marks");
-                    DataRow row = ds.Tables[0].Rows[0];
-
-
-                    SQLiteCommand command2 = new SQLiteCommand();
-                    command2.Connection = conn;
-                    if (j.subjects() == "Физика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks2 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-                    else if (j.subjects() == "Высшая математика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks1 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-
-                    else if (j.subjects() == "История России")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks3 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-
-
-                    command2.ExecuteNonQuery();
-
                 }
-                if (mark_text.Text == "3")
+                else if (mark == "3")
                 {
-                    MessageBox.Show("ok");
-                    string stud = Students_combo.Text;
-                    string mark = mark_text.Text;
-                    SQLiteConnection conn = new SQLiteConnection("Data Source = mm.db; Version = 3");
-                    conn.Open();
+
+                    
                     SQLiteCommand command = new SQLiteCommand();
                     command.Connection = conn;
                     command.CommandText = "INSERT INTO marks(subject,id_student,mark) VALUES (@s,@is,@m)";
                     command.Parameters.AddWithValue("@s", j.subjects());
-                    command.Parameters.AddWithValue("@is", stud);
+
+                    command.Parameters.AddWithValue("@is", Students_combo.Text.ToString());
                     command.Parameters.AddWithValue("@m", mark);
                     command.ExecuteNonQuery();
-
-
-                    SQLiteCommand command1 = new SQLiteCommand();
-                    command1.Connection = conn;
-                    command1.CommandText = "SELECT avg(mark) FROM marks WHERE id_student =@studentval AND subject = @sub";
-                    command1.Parameters.AddWithValue("@studentval", stud);
-                    command1.Parameters.AddWithValue("@sub", j.subjects());
-
-
-                    command1.ExecuteNonQuery();
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(command1);
-                    DataSet ds = new DataSet();
-                    adapter.Fill(ds, "marks");
-                    DataRow row = ds.Tables[0].Rows[0];
-
-
-                    SQLiteCommand command2 = new SQLiteCommand();
-                    command2.Connection = conn;
-                    if (j.subjects() == "Физика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks2 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-                    else if (j.subjects() == "Высшая математика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks1 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-
-                    else if (j.subjects() == "История России")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks3 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-
-
-                    command2.ExecuteNonQuery();
-
                 }
-                if (mark_text.Text == "4")
+                else if (mark == "2")
                 {
-                    MessageBox.Show("ok");
-                    string stud = Students_combo.Text;
-                    string mark = mark_text.Text;
-                    SQLiteConnection conn = new SQLiteConnection("Data Source = mm.db; Version = 3");
-                    conn.Open();
+
+                    
                     SQLiteCommand command = new SQLiteCommand();
                     command.Connection = conn;
                     command.CommandText = "INSERT INTO marks(subject,id_student,mark) VALUES (@s,@is,@m)";
                     command.Parameters.AddWithValue("@s", j.subjects());
-                    command.Parameters.AddWithValue("@is", stud);
+
+                    command.Parameters.AddWithValue("@is", Students_combo.Text.ToString());
                     command.Parameters.AddWithValue("@m", mark);
                     command.ExecuteNonQuery();
-
-
-                    SQLiteCommand command1 = new SQLiteCommand();
-                    command1.Connection = conn;
-                    command1.CommandText = "SELECT avg(mark) FROM marks WHERE id_student =@studentval AND subject = @sub";
-                    command1.Parameters.AddWithValue("@studentval", stud);
-                    command1.Parameters.AddWithValue("@sub", j.subjects());
-
-
-                    command1.ExecuteNonQuery();
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(command1);
-                    DataSet ds = new DataSet();
-                    adapter.Fill(ds, "marks");
-                    DataRow row = ds.Tables[0].Rows[0];
-
-
-                    SQLiteCommand command2 = new SQLiteCommand();
-                    command2.Connection = conn;
-                    if (j.subjects() == "Физика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks2 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-                    else if (j.subjects() == "Высшая математика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks1 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-
-                    else if (j.subjects() == "История России")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks3 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0])));
-                    }
-
-
-                    command2.ExecuteNonQuery();
-
                 }
-                if (mark_text.Text == "5")
+               else if (mark == "1")
                 {
-                    MessageBox.Show("ok");
-                    string stud = Students_combo.Text;
-                    string mark = mark_text.Text;
-                    SQLiteConnection conn = new SQLiteConnection("Data Source = mm.db; Version = 3");
-                    conn.Open();
+
+                    
                     SQLiteCommand command = new SQLiteCommand();
                     command.Connection = conn;
                     command.CommandText = "INSERT INTO marks(subject,id_student,mark) VALUES (@s,@is,@m)";
                     command.Parameters.AddWithValue("@s", j.subjects());
-                    command.Parameters.AddWithValue("@is", stud);
+
+                    command.Parameters.AddWithValue("@is", Students_combo.Text.ToString());
                     command.Parameters.AddWithValue("@m", mark);
                     command.ExecuteNonQuery();
-
-
-                    SQLiteCommand command1 = new SQLiteCommand();
-                    command1.Connection = conn;
-                    command1.CommandText = "SELECT avg(mark) FROM marks WHERE id_student =@studentval AND subject = @sub";
-                    command1.Parameters.AddWithValue("@studentval", stud);
-                    command1.Parameters.AddWithValue("@sub", j.subjects());
-
-
-                    command1.ExecuteNonQuery();
-                    SQLiteDataAdapter adapter = new SQLiteDataAdapter(command1);
-                    DataSet ds = new DataSet();
-                    adapter.Fill(ds, "marks");
-                    DataRow row = ds.Tables[0].Rows[0];
-
-
-                    SQLiteCommand command2 = new SQLiteCommand();
-                    command2.Connection = conn;
-                    if (j.subjects() == "Физика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks2 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0]), 2));
-                    }
-                    else if (j.subjects() == "Высшая математика")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks1 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0]), 2));
-                    }
-
-                    else if (j.subjects() == "История России")
-                    {
-                        command2.CommandText = "UPDATE magazine_marks SET middle_marks3 = @mm WHERE id_student = @is";
-                        command2.Parameters.AddWithValue("@is", stud);
-                        command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0]),2));
-                    }
-
-
-                    command2.ExecuteNonQuery();
-
                 }
-
-
-                else if (mark_text.Text != "1" && mark_text.Text != "2" && mark_text.Text != "3" && mark_text.Text != "4" && mark_text.Text != "5")
+                //if (mark_text.Text != "1" && mark_text.Text != "2" && mark_text.Text != "3" && mark_text.Text != "4" && mark_text.Text != "5")
+                else
                 {
+                    st_fail++;
                     mark_text.Text = " ";
                     MessageBox.Show("Внимание не корректное значение");
                 }
+
+
+                SQLiteCommand command1 = new SQLiteCommand();
+                command1.Connection = conn;
+                command1.CommandText = "SELECT avg(mark) FROM marks WHERE id_student =@studentval AND subject = @sub";
+                command1.Parameters.AddWithValue("@studentval", Students_combo.Text.ToString());
+                command1.Parameters.AddWithValue("@sub", j.subjects());
+
+
+                command1.ExecuteNonQuery();
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(command1);
+                DataSet ds = new DataSet();
+                adapter.Fill(ds, "marks");
+                DataRow row = ds.Tables[0].Rows[0];
+               
+
+                SQLiteCommand command2 = new SQLiteCommand();
+                command2.Connection = conn;
+                if (j.subjects() == "Физика")
+                {
+                    command2.CommandText = "UPDATE magazine_marks SET middle_marks2 = @mm WHERE id_student = @is";
+                    command2.Parameters.AddWithValue("@is", Students_combo.Text.ToString());
+                    command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0]),2));
+                }
+                else if (j.subjects() == "Высшая математика")
+                {
+                    command2.CommandText = "UPDATE magazine_marks SET middle_marks1 = @mm WHERE id_student = @is";
+                    command2.Parameters.AddWithValue("@is", Students_combo.Text.ToString());
+                    command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0]),2));
+                }
+
+                else if (j.subjects() == "История России")
+                {
+                    command2.CommandText = "UPDATE magazine_marks SET middle_marks3 = @mm WHERE id_student = @is";
+                    command2.Parameters.AddWithValue("@is", Students_combo.Text.ToString());
+                    command2.Parameters.AddWithValue("@mm", Math.Round(Convert.ToDouble(row[0]),2));
+                }
+
+
+                command2.ExecuteNonQuery();
+                if(st_fail== 0)
+                {
+                    MessageBox.Show("OK");
+                }
+                
+                conn.Close();
 
                
 
@@ -542,7 +419,7 @@ namespace magazine_marks
             DataTable dt = new DataTable();
             SQLiteDataAdapter adap = new SQLiteDataAdapter(command);
             adap.Fill(dt);
-
+            
             db_marks.ItemsSource = dt.DefaultView;
         }
 
@@ -665,9 +542,16 @@ namespace magazine_marks
 
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            db_middle_marks.Visibility = Visibility.Hidden;
-            marks_panel.Visibility = Visibility.Hidden;
-            students_panel.Visibility = Visibility.Visible;
+            if (j.roles() == "Администратор")
+            {
+                db_middle_marks.Visibility = Visibility.Hidden;
+                marks_panel.Visibility = Visibility.Hidden;
+                students_panel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                MessageBox.Show("У вас нет прав доступа к этому разделу");
+            }
 
         }
 
@@ -730,6 +614,26 @@ namespace magazine_marks
             catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString());
+            }
+        }
+
+        
+
+        private void surname_box_PreviewTextInput(object sender, TextCompositionEventArgs e)//Ограничение ввода. Активен ввод только букв
+        {
+            if (int.TryParse(e.Text, out int i))
+            {
+                e.Handled = true;
+            }
+
+            
+        }
+
+        private void name_box_PreviewTextInput(object sender, TextCompositionEventArgs e) //Ограничение ввода. Активен ввод только букв
+        {
+            if (int.TryParse(e.Text, out int i))
+            {
+                e.Handled = true;
             }
         }
     }
