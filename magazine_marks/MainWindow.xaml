@@ -6,16 +6,16 @@
         xmlns:local="clr-namespace:magazine_marks"
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1080" Deactivated="Window_Deactivated" SizeChanged="Window_SizeChanged"
-        x:Name="Win1" Loaded="Win1_Loaded"
+        x:Name="Win1" Loaded="Win1_Loaded" Activated="Win1_Activated"
         >
     <Grid>
-        <Grid x:Name="back_gr1" Visibility="Hidden">
+        <Grid x:Name="back_gr1" Visibility="Visible">
             <Image x:Name ="image" HorizontalAlignment="Left" Height="697" Margin="10,10,0,0" VerticalAlignment="Top" Width="1920" Source="/p1.jpg" Stretch="Fill" MaxWidth="1920" OpacityMask="#FFE5CF07" MaxHeight="2000"/>
 
         </Grid>
 
 
-        <StackPanel x:Name="log_in_" HorizontalAlignment="Center" Width="1080" Visibility="Hidden">
+        <StackPanel x:Name="log_in_" HorizontalAlignment="Center" Width="1080" Visibility="Visible">
 
 
 
@@ -29,13 +29,16 @@
 
 
         </StackPanel>
-        <StackPanel Visibility="Visible" x:Name="GUI">
+        <StackPanel Visibility="Hidden" x:Name="GUI">
             <StackPanel.Background>
                 <ImageBrush ImageSource="/back.jpg" Opacity="0.3"/>
             </StackPanel.Background>
             <StackPanel x:Name="menu" Background="#FF1414DD">
+
                 <Label Content="Средний балл" Foreground="White" MouseDown="Label_MouseDown"/>
                 <Label Content="Оценки обучающихся" Foreground="White" Margin="92,-27,0,0" HorizontalAlignment="Left" MouseDown="Label_MouseDown_1"/>
+                <Label x:Name="username_text" Content="" Foreground="White" HorizontalAlignment="Right" FontSize="14" Margin="0,-27,0,0"/>
+                <TextBlock TextWrapping="Wrap" Text="Обучающийся" Foreground="White" Margin="240,-23,0,0" HorizontalAlignment="Left" MouseDown="TextBlock_MouseDown"/>
             </StackPanel>
             <StackPanel Height="664" Visibility="Visible" x:Name="db_middle_marks" VerticalAlignment="Top">
                 <StackPanel.Background>
@@ -54,7 +57,7 @@
                     </DataGrid.Columns>
 
                 </DataGrid>
-                <Button x:Name="btn_Print" Content="Печать" HorizontalAlignment="Right" FontSize="20" Margin="0,5,38,0" Height="55" Width="97" Background="#FF7239BA" Foreground="White"/>
+                <Button x:Name="btn_Print" Content="Печать" HorizontalAlignment="Right" FontSize="20" Margin="0,5,38,0" Height="55" Width="97" Background="#FF7239BA" Foreground="White" Click="btn_Print_Click_1"/>
 
             </StackPanel>
             <StackPanel Height="664" Margin="-4,-660,0,0"  Visibility="Hidden" x:Name="marks_panel">
@@ -67,10 +70,10 @@
                     </ComboBox.Background>
                 </ComboBox>
                 <TextBlock TextWrapping="Wrap" Text="Обучающийся" HorizontalAlignment="Center" Margin="-63,-20,21,0" FontSize="16"/>
-                <TextBox x:Name ="mark_text" TextWrapping="Wrap" Width="120" Margin="158,23,0,0" Height="24" FontSize="18"/>
+                <TextBox x:Name ="mark_text" TextWrapping="Wrap" Width="120" Margin="158,23,0,0" Height="24" FontSize="18" PreviewKeyDown="mark_text_PreviewKeyDown" KeyDown="mark_text_KeyDown"/>
                 <TextBlock TextWrapping="Wrap" Text="Оценка" HorizontalAlignment="Center" Margin="-26,-24,0,0" FontSize="16"/>
                 <Button Content="Записать" FontSize="18" HorizontalAlignment="Center" Margin="108,24,0,0" VerticalAlignment="Top" Click="Button_Click_1"/>
-                <DataGrid x:Name="db_marks" Height="366" d:ItemsSource="{d:SampleData ItemCount=4}" Margin="0,103.8,0,0" AutoGenerateColumns="False"  >
+                <DataGrid x:Name="db_marks" Height="366" d:ItemsSource="{d:SampleData ItemCount=4}" Margin="0,103.8,0,0" AutoGenerateColumns="False"  ItemsSource="{Binding Test}">
                     <DataGrid.Background>
                         <SolidColorBrush Color="#FFF0F0F0" Opacity="0"/>
                     </DataGrid.Background>
@@ -93,7 +96,21 @@
                     </ComboBox>
                     <Button Content="Поиск" HorizontalAlignment="Right" Margin="0,-26,36,0" Width="69" Height="27" FontSize="16" Background="#FF7239BA" Foreground="White" Click="Button_Click_2"/>
                 </StackPanel>
+
+
             </StackPanel>
+            <StackPanel Height="664" HorizontalAlignment="Left" Width="1078" Margin="0,-662,0,0" Opacity="100" x:Name="students_panel" Visibility="Hidden">
+                <TextBlock TextWrapping="Wrap" Text="Добавление обучающихся" HorizontalAlignment="Left" Foreground="Black" Width="393" Height="55" Margin="0,5,0,0" FontSize="30"/>
+                <TextBox x:Name="surname_box" TextWrapping="Wrap" Width="190" FontSize="20" Height="37"/>
+                <TextBox x:Name="name_box" TextWrapping="Wrap" Width="190" FontSize="20" Height="37" Margin="0,20,0,0"/>
+                <TextBox x:Name="group_box" TextWrapping="Wrap" Width="190" FontSize="20" Height="37" Margin="0,33,0,0"/>
+                <TextBlock TextWrapping="Wrap" Text="Фамилия" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Padding="0,3,0,0" Margin="0,-293,281,0"/>
+                <TextBlock TextWrapping="Wrap" Text="Имя" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Padding="0,3,0,0" Margin="0,-178,281,0"/>
+                <TextBlock TextWrapping="Wrap" Text="Группа
+" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" Padding="0,3,0,0" Margin="0,-42,281,0"/>
+                <Button Content="Создать" HorizontalAlignment="Center" Margin="0,21,0,0" Width="148" Height="45" VerticalAlignment="Top" FontSize="15" Click="Button_Click_3"/>
+            </StackPanel>
+            
 
 
 
